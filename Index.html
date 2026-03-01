@@ -1,65 +1,140 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For Prachiza</title>
+<title>Happy Birthday Prachiza</title>
 
 <style>
 
 body{
 margin:0;
-font-family:Arial;
-background:linear-gradient(135deg,#ffb6d9,#d9c6ff);
-overflow:hidden;
+font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto;
+background:#0f0f14;
+color:white;
 text-align:center;
+overflow-x:hidden;
 }
 
-.card{
-background:white;
-padding:40px;
-border-radius:20px;
-width:320px;
-margin:auto;
-margin-top:120px;
-box-shadow:0 10px 40px rgba(0,0,0,0.2);
+/* INTRO */
+
+#intro{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:black;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:999;
+animation:introFade 5s forwards;
+}
+
+#intro h1{
+font-size:70px;
+letter-spacing:3px;
+}
+
+#intro p{
+opacity:.7;
+}
+
+@keyframes introFade{
+0%{opacity:1}
+80%{opacity:1}
+100%{
+opacity:0;
+visibility:hidden;
+}
+}
+
+/* HERO */
+
+.hero{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+}
+
+.hero h1{
+font-size:60px;
 }
 
 button{
-background:#ff4d88;
-color:white;
+padding:14px 28px;
+font-size:18px;
 border:none;
-padding:12px 20px;
-border-radius:30px;
-font-size:16px;
+border-radius:12px;
 cursor:pointer;
 }
 
-#intro{
-position:absolute;
-top:40%;
-width:100%;
-font-size:42px;
-font-weight:bold;
-color:white;
-text-shadow:0 0 20px pink,0 0 40px pink;
-animation:fade 3s forwards;
+.openBtn{
+background:white;
+color:black;
+margin-top:20px;
 }
 
-@keyframes fade{
-0%{opacity:0}
-20%{opacity:1}
-80%{opacity:1}
-100%{opacity:0}
+/* STORY */
+
+.hidden{
+display:none;
 }
+
+section{
+padding:40px 20px;
+max-width:700px;
+margin:auto;
+}
+
+/* PHOTO */
+
+.photo-wrap{
+position:relative;
+display:flex;
+justify-content:center;
+margin-top:30px;
+}
+
+.main-photo{
+width:240px;
+border-radius:18px;
+z-index:2;
+box-shadow:0 20px 60px rgba(0,0,0,.6);
+cursor:pointer;
+}
+
+.photo-glow{
+position:absolute;
+width:260px;
+height:260px;
+border-radius:30px;
+background:linear-gradient(45deg,#ff4d8d,#ff9ac6,#ffd6ec);
+filter:blur(40px);
+opacity:.6;
+z-index:1;
+}
+
+/* HEARTS */
 
 .heart{
-position:absolute;
-animation:float 6s linear infinite;
+position:fixed;
+bottom:-20px;
+animation:heartFloat 6s linear;
 }
 
-@keyframes float{
-0%{transform:translateY(100vh)}
-100%{transform:translateY(-10vh)}
+@keyframes heartFloat{
+0%{
+transform:translateY(0);
+opacity:1;
+}
+100%{
+transform:translateY(-110vh);
+opacity:0;
+}
 }
 
 </style>
@@ -68,44 +143,119 @@ animation:float 6s linear infinite;
 <body>
 
 <div id="intro">
-Prachiza ✨  
-Someone made this for you
+<h1>Prachiza</h1>
+<p>This was made for you by Bhavesh</p>
 </div>
 
-<audio autoplay loop>
-<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3">
-</audio>
-
-<div class="card">
-
+<div class="hero">
 <h1>Happy Birthday 🎂</h1>
-<h2>Prachiza Verma</h2>
-
-<p>
-Out of everyone in the world,
-I'm really glad I met you.
-</p>
-
-<button onclick="reveal()">Start Surprise</button>
-
-<p id="msg"></p>
-
+<button class="openBtn" onclick="start()">Open Surprise</button>
 </div>
+
+<section id="story" class="hidden">
+
+<h2>For You</h2>
+
+<div class="photo-wrap">
+<img src="YOUR_IMAGE_LINK_HERE" class="main-photo" onclick="photoSurprise()">
+<div class="photo-glow"></div>
+</div>
+
+<p id="text"></p>
+
+<br>
+
+<button onclick="love()">Maybe I like you too ❤️</button>
+<button onclick="friend()">Just friends 🙂</button>
+
+</section>
+
+<audio id="music" loop>
+<source src="https://cdn.pixabay.com/audio/2022/03/15/audio_c8c8a73467.mp3">
+</audio>
 
 <script>
 
-for(let i=0;i<30;i++){
-let h=document.createElement("div")
-h.innerHTML="💖"
-h.className="heart"
-h.style.left=Math.random()*100+"%"
-h.style.fontSize=(20+Math.random()*30)+"px"
-document.body.appendChild(h)
+function start(){
+document.querySelector(".hero").style.display="none"
+document.getElementById("story").classList.remove("hidden")
+document.getElementById("music").play()
+typeMessage()
+floatingHearts()
 }
 
-function reveal(){
-document.getElementById("msg").innerHTML=
-"I really like you Prachiza ❤️";
+/* typing message */
+
+const message =
+"Prachiza... whenever I see you my heart gets stolen. You make normal days feel special. So I made this small surprise for your birthday. — Bhavesh ❤️"
+
+let i=0
+
+function typeMessage(){
+let t=setInterval(()=>{
+if(i<message.length){
+document.getElementById("text").innerHTML+=message[i]
+i++
+}else{
+clearInterval(t)
+}
+},40)
+}
+
+/* floating hearts */
+
+function floatingHearts(){
+
+setInterval(()=>{
+
+let heart=document.createElement("div")
+heart.innerHTML="❤️"
+heart.className="heart"
+
+heart.style.left=Math.random()*100+"vw"
+heart.style.fontSize=(Math.random()*20+16)+"px"
+
+document.body.appendChild(heart)
+
+setTimeout(()=>heart.remove(),6000)
+
+},900)
+
+}
+
+/* photo surprise */
+
+function photoSurprise(){
+
+for(let i=0;i<120;i++){
+
+let heart=document.createElement("div")
+heart.innerHTML="❤️"
+heart.className="heart"
+
+heart.style.left=Math.random()*100+"vw"
+heart.style.fontSize=(Math.random()*25+20)+"px"
+
+document.body.appendChild(heart)
+
+setTimeout(()=>heart.remove(),5000)
+
+}
+
+setTimeout(()=>{
+alert("You make the world brighter. — Bhavesh ❤️")
+},300)
+
+}
+
+/* buttons */
+
+function love(){
+alert("You just made Bhavesh the happiest person alive ❤️")
+}
+
+function friend(){
+alert("Friends with you is still special 🙂")
 }
 
 </script>
